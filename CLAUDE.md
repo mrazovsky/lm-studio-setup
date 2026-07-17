@@ -23,6 +23,9 @@ this is a known, pre-validated checklist, not an open design decision.
    `chmod +x` it.
 5. Ensure PATH entries from README.md §3 are in `~/.bashrc`.
 6. Create `~/.continue/config.yaml` with the exact content from README.md §4.
+   Per-model `temperature`/`systemMessage`/`reasoning` values are intentional,
+   not defaults — see the rationale table in §4 ("Чому саме такі параметри
+   тюнінгу") before changing any of them.
 7. Run the jsonschema validation snippet in README.md §4 — treat a failure
    here as blocking, not a warning. Config that "looks right" but fails
    schema validation has silently done nothing before.
@@ -48,6 +51,10 @@ this is a known, pre-validated checklist, not an open design decision.
   kill the orphaned `llama-server` process holding VRAM, kill `llmster`, then
   `lms server start --port 1234` to resync. This has recurred more than once
   — don't treat it as a one-off.
+- Sampling/prompt tuning is role-specific by design: low temperature
+  (0.1–0.2) for autocomplete/coding where determinism matters, higher
+  (0.6–0.7) for chat/reasoning where some variation is fine. Don't normalize
+  all models to one temperature "for consistency" — that undoes the point.
 - Every file in this repo has been round-tripped: the embedded script/config
   blocks were diffed byte-for-byte against the live files they came from, and
   config.yaml was validated against the installed extension's JSON Schema
