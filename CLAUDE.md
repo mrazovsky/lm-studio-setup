@@ -60,3 +60,14 @@ this is a known, pre-validated checklist, not an open design decision.
   config.yaml was validated against the installed extension's JSON Schema
   (not just checked for valid YAML). If you regenerate either file, redo both
   checks before considering the update done.
+- **LM Studio itself auto-unloads any model after 1 hour idle**
+  (`~/.lmstudio/settings.json` → `developer.jitModelTTL.ttlSeconds: 3600`).
+  A model loaded at the start of a long session may silently be gone later —
+  that's expected TTL behavior, not the passkey bug above. Check `lms ps`
+  before assuming something broke.
+- LM Studio also has its own internal load guardrail, independent of the
+  7.2GB threshold in `lms-pick`: `modelLoadingGuardrails` in
+  `settings.json` (`mode: "high"`, `customThresholdBytes: 4294967296` = 4GB,
+  `alwaysAllowLoadAnyway: false`). It can refuse a load before `lms` even
+  attempts the CUDA allocation. If a load fails with no `cudaMalloc`/`SIGABRT`
+  trace in the server log at all, suspect this guardrail, not real OOM.

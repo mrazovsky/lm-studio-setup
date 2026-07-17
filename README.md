@@ -493,6 +493,31 @@ lms server start --port 1234                  # пересинхронізує p
 lms ps                                         # має відповісти без помилки auth
 ```
 
+### Дві приховані поведінки LM Studio (не баги, а налаштування)
+
+У `~/.lmstudio/settings.json` є два параметри, які легко сплутати з поломкою:
+
+```json
+"modelLoadingGuardrails": {
+  "mode": "high",
+  "customThresholdBytes": 4294967296,
+  "alwaysAllowLoadAnyway": false
+},
+"developer": {
+  "jitModelTTL": { "enabled": true, "ttlSeconds": 3600 }
+}
+```
+
+- **`jitModelTTL.ttlSeconds: 3600`** — будь-яка завантажена модель
+  автоматично вивантажується після **1 години бездіяльності**. Якщо модель
+  "раптом зникла" після довгої перерви — це очікована поведінка TTL, а не
+  passkey-баг вище. Спочатку `lms ps`, і лише якщо там помилка auth —
+  дивись попередній розділ.
+- **`modelLoadingGuardrails`** — власний захист LM Studio від завантаження
+  (поріг ~4GB, режим `"high"`), окремий від порогу 7.2GB у `lms-pick`. Якщо
+  завантаження провалюється, а в лозі сервера немає жодного сліду
+  `cudaMalloc`/`SIGABRT` — підозрюй цей guardrail, не реальний OOM.
+
 ## 6. Перевірка після встановлення
 
 ```bash
