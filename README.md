@@ -43,7 +43,21 @@ lms get text-embedding-nomic-embed-text-v1.5  # 84 MB — embeddings
 ```
 
 Якщо `lms get <id>` не знаходить модель — відкрий LM Studio GUI → пошук за
-цим же ID, завантаж вручну. Перевірка після завантаження:
+цим же ID, завантаж вручну. Або скачай напряму з HuggingFace (сторінки
+перевірені, кожна повертає 200 OK):
+
+| Модель | HuggingFace |
+|---|---|
+| Qwen2.5-Coder 1.5B | https://huggingface.co/lmstudio-community/Qwen2.5-Coder-1.5B-Instruct-GGUF |
+| Gemma E2B 4.6B | https://huggingface.co/lmstudio-community/gemma-4-E2B-it-GGUF |
+| DeepSeek R1 8B | https://huggingface.co/lmstudio-community/DeepSeek-R1-0528-Qwen3-8B-GGUF |
+| Ornith 9B | https://huggingface.co/deepreinforce-ai/Ornith-1.0-9B-GGUF |
+| Qwen 3.5 9B | https://huggingface.co/lmstudio-community/Qwen3.5-9B-GGUF |
+| Qwen3.6 14B MoE FableVibes | https://huggingface.co/tvall43/Qwen3.6-14B-A3B-FableVibes-GGUF |
+| Gemma 26B QAT | https://huggingface.co/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF |
+| Nomic Embed Text v1.5 | https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF (постачається разом з LM Studio за замовчуванням) |
+
+Перевірка після завантаження:
 
 ```bash
 lms ls
